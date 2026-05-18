@@ -1,10 +1,9 @@
 package br.com.katia.api_bancaria.resource;
 
-import br.com.katia.api_bancaria.entity.Cliente;
-import br.com.katia.api_bancaria.entity.Conta;
+import br.com.katia.api_bancaria.testutil.TestDatabaseCleaner;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
-import jakarta.transaction.Transactional;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,34 +15,12 @@ import static org.hamcrest.Matchers.notNullValue;
 @QuarkusTest
 class ClienteResourceTest {
 
+    @Inject
+    TestDatabaseCleaner cleaner;
+
     @BeforeEach
-    @Transactional
     void setup() {
-        Conta.deleteAll();
-        Cliente.deleteAll();
-    }
-
-    private Long criarCliente() {
-        String uuid = UUID.randomUUID().toString();
-
-        Response response =
-                given()
-                        .contentType("application/json")
-                        .body("{"
-                                + "\"nome\":\"Cliente Teste\","
-                                + "\"cpf\":\"" + uuid + "\","
-                                + "\"email\":\"" + uuid + "@email.com\""
-                                + "}")
-                        .when()
-                        .post("/clientes")
-                        .then()
-                        .statusCode(200)
-                        .body("id", notNullValue())
-                        .extract()
-                        .response();
-
-        Number id = response.jsonPath().get("id");
-        return id.longValue();
+        cleaner.limpar();
     }
 
     @Test
@@ -74,5 +51,27 @@ class ClienteResourceTest {
                 .then()
                 .statusCode(200)
                 .body("id", notNullValue());
+    }
+
+    private Long criarCliente() {
+        String uuid = UUID.randomUUID().toString();
+
+        Response response =
+                given()
+                        .contentType("application/json")
+                        .body("{"
+                                + "\"nome\":\"Cliente Teste\","
+                                + "\"cpf\":\"" + uuid + "\","
+                                + "\"email\":\"" + uuid + "@email.com\""
+                                + "}")
+                        .when()
+                        .post("/clientes")
+                        .then()
+                        .statusCode(200)
+                        .body("id", notNullValue())
+                        .extract()
+                        .response();
+
+        return ((Number) response.jsonPath().get("id")).longValue();
     }
 }
