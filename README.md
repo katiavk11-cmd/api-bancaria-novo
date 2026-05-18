@@ -163,6 +163,9 @@ Resultado final da cobertura:
 | Linhas   | 74%       |
 | Branches | 69%       |
 
+
+![Cobertura Jacoco](docs/jacoco.png)
+
 Relatório disponível em:
 
 ```text
