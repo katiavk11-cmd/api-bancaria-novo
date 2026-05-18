@@ -1,73 +1,208 @@
-# api-bancaria-novo
+````md
+# API Bancária - Quarkus
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Projeto acadêmico desenvolvido para a disciplina de Testes de Software, utilizando Quarkus para simular operações de um banco digital.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+---
 
-## Running the application in dev mode
+# Tecnologias Utilizadas
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
+- Java 21
+- Quarkus 3
+- Hibernate ORM Panache
+- RESTEasy Reactive
+- H2 Database
+- PostgreSQL Driver
+- JUnit 5
+- Mockito
+- RestAssured
+- Jacoco
+
+---
+
+# Funcionalidades
+
+A API permite:
+
+- Cadastro de clientes
+- Criação de contas bancárias
+- Consulta de contas
+- Consulta de saldo
+- Depósito
+- Saque
+- Transferência entre contas
+
+---
+
+# Estrutura do Projeto
+
+```text
+src
+ ├── main
+ │    ├── java
+ │    │     └── br.com.katia.api_bancaria
+ │    │            ├── dto
+ │    │            ├── entity
+ │    │            ├── exception
+ │    │            ├── repository
+ │    │            ├── resource
+ │    │            └── service
+ │    │
+ │    └── resources
+ │          ├── application.properties
+ │          └── import.sql
+ │
+ └── test
+      └── java
+            └── br.com.katia.api_bancaria
+                   ├── integracao
+                   ├── resource
+                   ├── service
+                   └── testutil
+````
+
+---
+
+# Executar o Projeto
+
+## Modo desenvolvimento
+
+```bash
+mvn quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+A API ficará disponível em:
 
-## Packaging and running the application
-
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+```text
+http://localhost:8080
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+---
 
-## Creating a native executable
+# Swagger / OpenAPI
 
-You can create a native executable using: 
-```shell script
-./mvnw package -Dnative
+Documentação automática disponível em:
+
+```text
+http://localhost:8080/q/swagger-ui
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+---
+
+# Executar Testes
+
+```bash
+mvn clean test
 ```
 
-You can then execute your native executable with: `./target/api-bancaria-novo-1.0.0-SNAPSHOT-runner`
+---
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+# Build Completo
 
-## Related Guides
+```bash
+mvn clean install
+```
 
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplified JPA/Hibernate data access layer with active record and repository patterns
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Generate OpenAPI schemas and serve Swagger UI for REST API documentation
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
+---
 
-## Provided Code
+# Testes Implementados
 
-### Hibernate ORM
+## Testes Unitários
 
-Create your first JPA entity
+### ContaServiceTest
 
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
+* depósito com sucesso
+* saque com sucesso
+* transferência com sucesso
+* conta inexistente
+* saldo insuficiente
+* valor inválido
+* cálculo de saldo
 
+### ClienteServiceTest
 
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
+* salvar cliente
+* buscar cliente
+* listar clientes
 
+### TransacaoServiceTest
 
-### REST
+* depósito
+* saque
+* transferência
+* validações de erro
 
-Easily start your REST Web Services
+---
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+## Testes de Integração
+
+### ContaResourceTest
+
+* criar conta
+* listar contas
+* buscar conta
+* depósito
+* saque
+* saque sem saldo
+* transferência
+* consulta de saldo
+
+### ClienteResourceTest
+
+* criar cliente
+* buscar cliente por id
+
+---
+
+# Cobertura de Testes - Jacoco
+
+Resultado final da cobertura:
+
+| Tipo     | Cobertura |
+| -------- | --------- |
+| Linhas   | 74%       |
+| Branches | 69%       |
+
+Relatório disponível em:
+
+```text
+target/jacoco-report/index.html
+```
+
+---
+
+# Banco de Dados para Testes
+
+Os testes utilizam:
+
+```text
+H2 Database em memória
+```
+
+Garantindo:
+
+* isolamento entre testes
+* independência de execução
+* rapidez na execução da suíte
+
+---
+
+# Padrões Utilizados nos Testes
+
+* AAA (Arrange / Act / Assert)
+* assertThrows
+* Mockito verify
+* RestAssured
+* @BeforeEach para limpeza do banco
+* testes independentes
+
+---
+
+# Autor
+
+Katia Kuhn
+
+Projeto desenvolvido para fins acadêmicos.
+
+```
+```
